@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SPHH • Inscrição</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#faf7f5;color:#332b28;font-family:Arial,sans-serif}
+header{text-align:center;background:#fff;padding:18px;border-bottom:1px solid #eadbd5}header img{max-width:230px;width:70%}
+.hero{text-align:center;padding:38px 20px 24px}.hero h1{font: bold 42px Georgia,serif;color:#5a4037;margin:0 0 8px}.hero p{color:#77645d}
+.container{width:min(760px,92%);margin:auto}form,.panel{background:#fff;padding:28px;border-radius:22px;border:1px solid #eadbd5;box-shadow:0 8px 30px rgba(70,45,35,.08);margin-bottom:25px}
+.title{font:22px Georgia,serif;color:#8b6659;border-bottom:1px solid #eadbd5;padding-bottom:10px;margin:8px 0 18px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}label{display:block;font-weight:bold;font-size:14px;margin-bottom:7px}
+input,select,textarea{width:100%;padding:13px;border:1px solid #d9c6be;border-radius:10px;font-size:15px;background:#fffdfc}
+textarea{min-height:90px;resize:vertical}.full{grid-column:1/-1}
+.check{display:flex;gap:9px;font-weight:normal;margin-top:20px}.check input{width:auto}
+button{width:100%;padding:15px;border:0;border-radius:12px;background:#b98d7d;color:#fff;font-size:17px;font-weight:bold;margin-top:22px;cursor:pointer}
+.msg{display:none;margin-top:16px;padding:14px;border-radius:10px;background:#edf6ed;color:#355b3b;text-align:center}
+.card{padding:12px 0;border-bottom:1px solid #eadbd5}.muted{color:#8a7770}
+@media(max-width:620px){.grid{grid-template-columns:1fr}.full{grid-column:auto}.hero h1{font-size:32px}}
+</style>
+</head>
+<body>
+<header><img src="logo-sphh.jpeg" alt="SPHH"></header>
+<section class="hero"><h1>Inscrição para Competição</h1><p>Sociedade Paranaense de Hobby Horses • SPHH</p></section>
+
+<main class="container">
+<form id="form">
+<h2 class="title">🏆 Informações da competição</h2>
+<div class="grid">
+<div><label>Data</label><input value="04/10/2026" readonly></div>
+<div><label>Local</label><input value="Sociedade Hípica Paranaense" readonly></div>
+<div><label>Valor da inscrição</label><input value="R$ 8,00" readonly></div>
+</div>
+
+<h2 class="title">👤 Dados do participante</h2>
+<div class="grid">
+<div><label for="nome">Nome completo *</label><input id="nome" required></div>
+<div><label for="idade">Idade * (mínimo 7 anos)</label><input id="idade" type="number" min="7" max="100" required></div>
+<div class="full"><label for="telefone">Telefone / WhatsApp *</label><input id="telefone" type="tel" required></div>
+</div>
+
+<h2 class="title">🐴 Dados do Hobby Horse</h2>
+<div class="grid">
+<div><label for="horse">Nome do Hobby Horse *</label><input id="horse" required></div>
+<div><label for="cor">Pelagem / Cor</label><input id="cor" placeholder="Ex.: palomino pampa"></div>
+</div>
+
+<h2 class="title">🏆 Categoria</h2>
+<select id="categoria" required>
+<option value="">Selecione...</option><option>40 cm</option><option>60 cm</option><option>80 cm</option><option>90 cm</option><option>GP (95 cm)</option>
+</select>
+
+<label style="margin-top:16px">Observações</label>
+<textarea id="obs" placeholder="Alguma informação importante?"></textarea>
+
+<label class="check"><input type="checkbox" required><span>Confirmo que as informações são verdadeiras e aceito participar da competição. *</span></label>
+<button type="submit">CONFIRMAR INSCRIÇÃO 🐎</button>
+<div class="msg" id="msg"></div>
+</form>
+
+<section class="panel">
+<h2 class="title">📋 Inscritos</h2>
+<div id="lista"><p class="muted">Carregando...</p></div>
+</section>
+</main>
+
+<script>
+const API_URL="COLE_AQUI_A_URL_DO_GOOGLE_APPS_SCRIPT";
+const form=document.getElementById("form"),msg=document.getElementById("msg"),lista=document.getElementById("lista");
+
+async function carregar(){
+ if(API_URL.startsWith("COLE_")){lista.innerHTML='<p class="muted">Configure a URL do banco de inscrições para exibir os inscritos.</p>';return}
+ try{
+  const r=await fetch(API_URL+"?action=list"); const d=await r.json();
+  lista.innerHTML=d.inscritos.length?d.inscritos.map((x,i)=>`<div class="card"><b>${i+1}. ${x.nome}</b><br>${x.horse} • ${x.categoria}<br><small>${x.data}</small></div>`).join(""):'<p class="muted">Nenhuma inscrição ainda.</p>';
+ }catch(e){lista.innerHTML='<p class="muted">Não foi possível carregar os inscritos.</p>'}
+}
+form.addEventListener("submit",async e=>{
+ e.preventDefault();
+ const idade=Number(document.getElementById("idade").value);
+ if(idade<7){alert("A idade mínima é 7 anos.");return}
+ const dados={nome:nome.value,idade,telefone:telefone.value,horse:horse.value,cor:cor.value,categoria:categoria.value,obs:obs.value};
+ if(API_URL.startsWith("COLE_")){alert("O banco ainda não foi conectado.");return}
+ msg.style.display="block";msg.textContent="Enviando inscrição...";
+ try{
+  const r=await fetch(API_URL,{method:"POST",body:JSON.stringify(dados)});
+  const d=await r.json();
+  if(!d.ok)throw Error();
+  msg.textContent="🎉 Inscrição salva com sucesso!";
+  form.reset(); carregar();
+ }catch(e){msg.textContent="Não foi possível salvar. Tente novamente.";msg.style.background="#fff0f0";msg.style.color="#8a3333"}
+});
+carregar();
+</script>
+</body></html>
