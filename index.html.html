@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPHH • Inscrição para Competição</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #faf7f5;
+      color: #332b28;
+      min-height: 100vh;
+    }
+
+    header {
+      background: white;
+      border-bottom: 1px solid #eadbd5;
+      padding: 18px 20px;
+      text-align: center;
+    }
+
+    header img {
+      width: min(230px, 70vw);
+      height: auto;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 42px 20px 25px;
+    }
+
+    .hero h1 {
+      font-family: Georgia, serif;
+      font-size: clamp(30px, 6vw, 48px);
+      color: #5a4037;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      color: #77645d;
+      font-size: 16px;
+    }
+
+    .container {
+      width: min(760px, 92%);
+      margin: 0 auto 50px;
+    }
+
+    form {
+      background: white;
+      padding: clamp(22px, 5vw, 38px);
+      border-radius: 22px;
+      box-shadow: 0 8px 30px rgba(70, 45, 35, .08);
+      border: 1px solid #eadbd5;
+    }
+
+    .section-title {
+      font-family: Georgia, serif;
+      font-size: 22px;
+      color: #8b6659;
+      margin: 8px 0 18px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #eadbd5;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .full { grid-column: 1 / -1; }
+
+    label {
+      display: block;
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 7px;
+      color: #51423d;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #d9c6be;
+      border-radius: 10px;
+      background: #fffdfc;
+      color: #332b28;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #b78e7f;
+      box-shadow: 0 0 0 3px rgba(183, 142, 127, .14);
+    }
+
+    textarea {
+      min-height: 95px;
+      resize: vertical;
+    }
+
+    .check {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-top: 20px;
+      font-weight: normal;
+      line-height: 1.4;
+    }
+
+    .check input {
+      width: auto;
+      margin-top: 3px;
+      accent-color: #a97868;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 24px;
+      padding: 15px;
+      border: 0;
+      border-radius: 12px;
+      background: #b98d7d;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    button:hover {
+      background: #9f7162;
+      transform: translateY(-1px);
+    }
+
+    #mensagem {
+      display: none;
+      margin-top: 18px;
+      padding: 15px;
+      border-radius: 12px;
+      background: #edf6ed;
+      color: #355b3b;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #8a7770;
+      font-size: 13px;
+    }
+
+    @media (max-width: 620px) {
+      .grid { grid-template-columns: 1fr; }
+      .full { grid-column: auto; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <img src="logo-sphh.jpeg" alt="SPHH - Sociedade Paranaense de Hobby Horses">
+  </header>
+
+  <section class="hero">
+    <h1>Inscrição para Competição</h1>
+    <p>Sociedade Paranaense de Hobby Horses • SPHH</p>
+  </section>
+
+  <main class="container">
+    <form id="inscricaoForm">
+
+      <h2 class="section-title">👤 Dados do participante</h2>
+
+      <div class="grid">
+        <div>
+          <label for="nome">Nome completo *</label>
+          <input id="nome" name="nome" type="text" required>
+        </div>
+
+        <div>
+          <label for="idade">Idade *</label>
+          <input id="idade" name="idade" type="number" min="1" max="100" required>
+        </div>
+
+
+
+        <div class="full">
+          <label for="telefone">Telefone / WhatsApp *</label>
+          <input id="telefone" name="telefone" type="tel" required>
+        </div>
+      </div>
+
+      <h2 class="section-title">🐴 Dados do Hobby Horse</h2>
+
+      <div class="grid">
+        <div>
+          <label for="nomeHorse">Nome do Hobby Horse *</label>
+          <input id="nomeHorse" name="nomeHorse" type="text" required>
+        </div>
+
+        <div>
+          <label for="pelagem">Pelagem / Cor</label>
+          <input id="pelagem" name="pelagem" type="text" placeholder="Ex.: palomino pampa">
+        </div>
+      </div>
+
+      <h2 class="section-title">🏆 Categoria</h2>
+
+      <div class="grid">
+        <div class="full">
+          <label for="categoria">Escolha sua categoria *</label>
+          <select id="categoria" name="categoria" required>
+            <option value="">Selecione...</option>
+            <option>Iniciante</option>
+            <option>60 cm</option>
+            <option>80 cm</option>
+            <option>1,00 m</option>
+            <option>Adestramento</option>
+            <option>Outra</option>
+          </select>
+        </div>
+
+
+
+        <div>
+          <label for="observacoes">Observações</label>
+          <textarea id="observacoes" name="observacoes" placeholder="Alguma informação importante?"></textarea>
+        </div>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" required>
+        <span>Confirmo que as informações preenchidas são verdadeiras e aceito o regulamento da competição. *</span>
+      </label>
+
+      <button type="submit">Confirmar inscrição 🐎</button>
+
+      <div id="mensagem">
+        🎉 Inscrição preenchida com sucesso!
+        <br>
+        <small>Sua inscrição será enviada para a organização da competição.</small>
+      </div>
+    </form>
+  </main>
+
+  <footer>
+    SPHH • Sociedade Paranaense de Hobby Horses
+  </footer>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbyy14zJmGjOdxjndX6XgzAS33kaG1k5yGjJQH9Lz_R5AK1lp6JNkU5z29-k0iXDCXLR9Q/exec";
+
+    document.getElementById("inscricaoForm").addEventListener("submit", async function(event) {
+      event.preventDefault();
+
+      const form = event.currentTarget;
+      const button = form.querySelector('button[type="submit"]');
+      const mensagem = document.getElementById("mensagem");
+
+      button.disabled = true;
+      button.textContent = "Enviando...";
+
+      const dados = Object.fromEntries(new FormData(form).entries());
+
+      try {
+        await fetch(API_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(dados)
+        });
+
+        mensagem.innerHTML = "🎉 Inscrição enviada com sucesso!";
+        mensagem.style.display = "block";
+        form.reset();
+
+        window.scrollTo({
+          top: mensagem.offsetTop - 100,
+          behavior: "smooth"
+        });
+      } catch (erro) {
+        mensagem.innerHTML = "❌ Não foi possível enviar a inscrição. Tente novamente.";
+        mensagem.style.display = "block";
+      } finally {
+        button.disabled = false;
+        button.textContent = "Confirmar inscrição 🐎";
+      }
+    });
+  </script>
+</body>
+</html>
